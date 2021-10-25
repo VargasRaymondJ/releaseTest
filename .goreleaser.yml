@@ -1,11 +1,14 @@
 # This is an example .goreleaser.yml file with some sensible defaults.
 # Make sure to check the documentation at https://goreleaser.com
+env: 
+  - GO111MODULE=on
+  - GOPROXY=https://goproxy.io
+
 before:
   hooks:
     # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
+
 builds:
   - env:
       - CGO_ENABLED=0
@@ -13,6 +16,7 @@ builds:
       - linux
       - windows
       - darwin
+
 archives:
   - replacements:
       darwin: Darwin
@@ -20,13 +24,27 @@ archives:
       windows: Windows
       386: i386
       amd64: x86_64
+
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
+
 changelog:
   sort: asc
   filters:
     exclude:
       - '^docs:'
       - '^test:'
+
+brews:
+  - homepage: 'https://github.com/VargasRaymondJ/homebrew-jackalope-test'
+    description: 'Example binary distribution using goreleaser and homebrew'
+    folder: Formula
+    commit_author:
+      name: vargasraymondj
+      email: vargasraymondj@gmail.com
+    tap:
+      owner: vargasraymondj
+      name: homebrew-jackalope-test
